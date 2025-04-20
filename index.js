@@ -24,5 +24,5 @@ app.use(express.static('Public'))
 const PORT =  process.env.PORT
 
 app.listen(PORT, ()=>{
-    console.log(`listing on PORT ${PORT}`)
+    console.log(`listing on Port ${PORT}`)
 })
