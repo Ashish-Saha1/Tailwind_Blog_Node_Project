@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const expressEjsLayouts = require('express-ejs-layouts');
+
 const app = express();
 const expressLayouts = require('express-ejs-layouts');
 const ejs = require('ejs')
@@ -15,10 +15,16 @@ app.get('/', (req,res)=>{
     //res.send("Hello")
 })
 
-app.set('view engine', 'ejs');
-app.set('layouts', './Layout/main.ejs')
-app.use(expressEjsLayouts)
+app.get('/about', (req,res)=>{
+    res.render('./about.ejs')
+    //res.send("ABout Page")
+})
+
 app.use(express.static('Public'))
+
+app.use(expressLayouts)
+app.set('layouts', './Layout/main.ejs')
+app.set('view engine', 'ejs');
 
 
 const PORT =  process.env.PORT
