@@ -204,9 +204,6 @@
   .my-14 {
     margin-block: calc(var(--spacing) * 14);
   }
-  .my-16 {
-    margin-block: calc(var(--spacing) * 16);
-  }
   .my-20 {
     margin-block: calc(var(--spacing) * 20);
   }
@@ -412,21 +409,6 @@
   .text-\[28\.5px\] {
     font-size: 28.5px;
   }
-  .text-\[28px\] {
-    font-size: 28px;
-  }
-  .text-\[29px\] {
-    font-size: 29px;
-  }
-  .text-\[30px\] {
-    font-size: 30px;
-  }
-  .text-\[32px\] {
-    font-size: 32px;
-  }
-  .text-\[34px\] {
-    font-size: 34px;
-  }
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
     font-weight: var(--font-weight-bold);
@@ -508,6 +490,22 @@
   .\*\*\:justify-center {
     :is(& *) {
       justify-content: center;
+    }
+  }
+  .group-hover\:blur {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        --tw-blur: blur(8px);
+        filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+      }
+    }
+  }
+  .group-hover\:blur-\[3px\] {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        --tw-blur: blur(3px);
+        filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+      }
     }
   }
   .group-hover\:blur-sm {

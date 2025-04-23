@@ -11,29 +11,23 @@
 </div>
 
 
-                                            <!-- Body Section Ends Here -->
 
-
-                                            <!-- Posts Section Starts Here --> 
+<!-- Posts Section Starts Here --> 
 
 <div class="posts max-w-[64rem]  mx-auto my-10 group px-6">
     <h1 class="text-3xl font-bold mb-10">Latest Posts</h1>
 
-    <div class="post md:flex justify-between items-center cursor-pointer py-5 border-b border-sky-200 hover:blur-none group-hover:blur-sm hover:!blur-none transition-all">
-        <p class="text-[1.5rem] font-semibold mb-3">Learn JS</p>
-        <span class="text-[1rem] ">Sun Jan 26 2025</span>
-    </div>
+    <% posts.forEach(element => { %>
+        <div class="post md:flex justify-between items-center cursor-pointer py-5 border-b border-sky-200 hover:blur-none group-hover:blur-[3px] hover:!blur-none transition-all">
+            <p class="text-[1.5rem] font-semibold mb-3"><%=  element.title %> </p> 
+            <span class="text-[1rem] "><%= element.createdAt.toDateString() %></span>
+        </div>
+    <% }) %>
 
-    <div class="post md:flex justify-between items-center cursor-pointer py-5 border-b border-sky-200 hover:blur-none group-hover:blur-sm hover:!blur-none transition-all">
-        <p class="text-[1.5rem] font-semibold mb-3">Learn Express JS</p>
-        <span class="text-[1rem] ">Sun Jan 26 2025</span>
-    </div>
 
-    <div class="post md:flex justify-between items-center cursor-pointer py-5 border-b border-sky-200 hover:blur-none group-hover:blur-sm hover:!blur-none transition-all">
-        <p class="text-[1.5rem] font-semibold mb-3">Learn Node JS</p>
-        <span class="text-[1rem] ">Sun Jan 26 2025</span>
-    </div>
 </div>
+
+
 
 
 </section>

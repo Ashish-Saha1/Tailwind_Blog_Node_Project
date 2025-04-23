@@ -5,8 +5,10 @@ const app = express();
 const expressLayouts = require('express-ejs-layouts');
 const ejs = require('ejs')
 
+//Internal imports
 const mainRoutes = require('./Server/Routes/main')
 const dbConnect = require('./Server/Config/db')
+
 
 
 //database connect
@@ -23,6 +25,7 @@ app.set('view engine', 'ejs');
 //Parser
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
 
 
 
