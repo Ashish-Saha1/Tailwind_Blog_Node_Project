@@ -18,7 +18,7 @@
     <h1 class="text-3xl font-bold mb-10">Latest Posts</h1>
 
     <% posts.forEach(element => { %>
-        <div class="post md:flex justify-between items-center cursor-pointer py-5 border-b border-sky-200 hover:blur-none group-hover:blur-[3px] hover:!blur-none transition-all">
+        <div class="post md:flex justify-between items-center cursor-pointer py-5 border-b border-sky-200 hover:blur-none group-hover:blur-[2px] hover:!blur-none transition-all">
             <p class="text-[1.5rem] font-semibold mb-3"><%=  element.title %> </p> 
             <span class="text-[1rem] "><%= element.createdAt.toDateString() %></span>
         </div>
@@ -30,4 +30,15 @@
 
 
 
+<% if (nextPage) { %>
+    <div class=" max-w-[64rem] mx-auto px-6">
+        <a href="/?page=<%= nextPage %> " class="text-2xl text-gray-600" >View older posts &lt</a>
+    </div>
+<% } %> 
+
+
+
 </section>
+
+
+

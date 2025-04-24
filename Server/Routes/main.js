@@ -2,24 +2,49 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../Model/post');
 
+
+
+//Get Method Home page
 router.get('/', async (req,res)=>{
     const locals = {
         title: "Home Page",
         description : "This is a blog site using tailwind"
     }
 
-    
+    const perPage = 5;
+    const page = parseInt(req.query.page) || 1;
+    const totalDocument = await Post.countDocuments();
+    let nextPage = page + 1;
+    let hasNextPage = totalDocument > page * perPage;
+
+    const posts = await Post.aggregate(
+        [
+            {$sort: {createdAt: -1}},
+            { $skip: (page - 1) * perPage },
+            {$limit: perPage},
+        ]
+    )
 
 
-    const posts = await Post.aggregate([{$sort: {createdAt: -1}}])
-    res.render('indexBody.ejs', {locals, posts})
+    res.render('indexBody', 
+        {   locals, 
+            posts,
+            nextPage : hasNextPage? nextPage : null
+        }
+
+    )
 })
 
+
+
+
+
 router.get('/about', async (req,res)=>{
-    
-    
-    
-    res.render('about.ejs',{title: 'About Page'})
+    const locals = {
+        title: "About Page",
+        description : "This is a blog site using tailwind"
+    }
+    res.render('about.ejs',{locals})
     
 })
 
