@@ -49,6 +49,16 @@ router.get('/about', async (req,res)=>{
 })
 
 
+router.get('/login', async (req,res)=>{
+    const locals = {
+        title: "Login Page",
+        description : "This is a blog site using tailwind"
+    }
+    res.render('login',{locals})
+    
+})
+
+
 
 
 
