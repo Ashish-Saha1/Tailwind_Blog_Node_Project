@@ -1,0 +1,45 @@
+
+<section>
+    <form action="/register" method="post" enctype="multipart/form-data"  class="max-w-[35rem]  mx-auto flex flex-col p-5 group">
+
+        <span class="text-4xl mb-4"><a href="/login " >&#8617</a></span>
+
+        <div class="flex sm:flex-row flex-col sm:items-center  gap-1 py-3 sm:relative">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="" class="border-1 rounded w-2xs h-8 sm:absolute left-40 px-3">
+        </div>
+
+        <div class="flex sm:flex-row flex-col sm:items-center gap-1 py-3 relative">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="" class="border-1 rounded w-2xs h-8 sm:absolute left-40 px-3">
+        </div>
+
+        <div class="flex sm:flex-row flex-col sm:items-center gap-1 py-3 relative">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="" class="border-1 rounded w-2xs h-8 sm:absolute left-40 px-3">
+        </div>
+
+        <div class="flex sm:flex-row flex-col sm:items-center gap-1 py-3 relative">
+        <label for="phone">Phone</label>
+        <input type="number" name="phone" id="" class="border-1 rounded w-2xs sm:absolute h-8 left-40 px-3">
+        </div>
+
+        <div class="flex sm:flex-row flex-col sm:items-center gap-1 py-3 relative ">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="" class="border-1 rounded w-2xs h-8 sm:absolute left-40 px-3">
+        </div>
+
+        <input type="file" name="avater" id="" 
+        class="py-3 file:mr-4 file:py-2 file:px-3
+        file:rounded file:border-0
+        file:text-sm file:font-semibold
+        file:bg-blue-500 file:text-white
+        hover:file:bg-blue-600 font-bold mb-7"  
+
+        >
+        
+
+        <input type="submit" value="Register" class="bg-linear-to-l from-sky-300 to-emerald-100 px-4 py-1.5 cursor-pointer rounded-lg shadow font-bold text-gray-700 hover:text-gray-500 self-start">
+        
+    </form>
+</section>

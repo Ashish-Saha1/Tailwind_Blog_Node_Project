@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../Model/post');
+const User = require('../Model/user');
+const multer = require('multer');
 
-
+const upload = multer({ dest: './Public/uploads/' })
 
 //Get Method Home page
 router.get('/', async (req,res)=>{
@@ -37,8 +39,7 @@ router.get('/', async (req,res)=>{
 
 
 
-
-
+//Get method About Page 
 router.get('/about', async (req,res)=>{
     const locals = {
         title: "About Page",
@@ -48,15 +49,62 @@ router.get('/about', async (req,res)=>{
     
 })
 
-
+//Get method Login Page 
 router.get('/login', async (req,res)=>{
     const locals = {
-        title: "Login Page",
+        title: "login",
         description : "This is a blog site using tailwind"
     }
     res.render('login',{locals})
     
 })
+
+//Get method Register Page 
+router.get('/register', async (req,res)=>{
+    const locals = {
+        title: "Register",
+        description : "This is a blog site using tailwind"
+    }
+    res.render('register',{locals})
+    
+})
+
+//Post method Register Page 
+router.post('/register', upload.single('avater'), async (req,res)=>{
+    
+    const {name, username, email, phone, password} = req.body;
+
+    console.log(name, username, email, phone, password, req.file);
+    
+    
+    res.send('register')
+    
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
