@@ -6,6 +6,7 @@ const multer = require('multer');
 const path = require('path');
 const bcrypt = require('bcrypt')
 const fs = require('fs');
+const { Aggregate } = require('mongoose');
 
 
 
@@ -57,9 +58,82 @@ router.get('/login', async (req,res)=>{
         title: "login",
         description : "This is a blog site using tailwind"
     }
+
     res.render('Admin/login',{locals, layout: adminLayout})
-    //res.send("Hellow loging")
+    
 })
+
+
+
+//Post method Login Page 
+router.post('/login', async (req,res,next)=>{
+    
+   
+    try {
+
+        // let perPage = 5;
+        // let page = parseInt(req.query.page) || 1;
+        // let totalPost = await Post.countDocuments()
+        // let nextPage = page + 1;
+        
+        // //let hasNextPage = totalPost / page - perPage > 0
+        // let hasNextPage = totalPost > page * perPage;
+
+        // const posts = await Post.aggregate(
+        //     [
+        //         {$sort:{createdAt: -1}},
+        //         {$skip:  (page-1) * perPage},
+        //         {$limit : perPage},
+        //     ]
+        // )
+
+        const perPage = 10;
+    const page = parseInt(req.query.page) || 1;
+    const totalDocument = await Post.countDocuments();
+    let nextPages = page + 1;
+    let hasNextPages = totalDocument > page * perPage;
+
+    const postsData = await Post.aggregate(
+        [
+            {$sort: {createdAt: -1}},
+            { $skip: (page - 1) * perPage },
+            {$limit: perPage},
+        ]
+    )
+
+        
+        const user = await User.findOne(
+            {$or:[{"username": req.body.username},
+                {"email": req.body.username},
+                {"phone": req.body.username}]
+                
+            })
+
+        if(user){
+            const matchPassword = await bcrypt.compare(req.body.password, user.password);
+            if(matchPassword){
+                res.render('./Admin/adminDashboard.ejs', 
+                    {   postsData, 
+                        layout : adminLayout, 
+                        nextPages : hasNextPages ? nextPages : null
+                    }
+                )
+            }else{
+                next("Password not matched")
+            }
+        }else{
+            next("User not Matched")
+        }
+
+    } catch (error) {
+        console.log(error);
+        
+    }
+        
+
+})
+
+
 
 //Get method Register Page 
 router.get('/register', async (req,res)=>{
@@ -77,9 +151,10 @@ router.post('/register', upload.single('avatar'), async (req,res,next)=>{
 
     const deleteUploadedFile = async()=>{
         if(req.file){
-            const filePath = path.join(__dirname,"../uploads",req.file.filename);
+            const filePath = path.join(__dirname, "../../Public/uploads", req.file.filename)
             try {
-                await fs.unlink(filePath)
+                await fs.promises.unlink(filePath)
+                console.log('deleted')
             } catch (error) {
                 console.log(filePath);
                 
@@ -126,35 +201,7 @@ router.post('/register', upload.single('avatar'), async (req,res,next)=>{
 })
 
 
-//Post method Login Page 
-router.post('/login', async (req,res,next)=>{
-    
-    try {
-        const user = await User.findOne(
-            {$or:[{"username": req.body.username},
-                {"email": req.body.username},
-                {"phone": req.body.username}]
-                
-            })
 
-        if(user){
-            const matchPassword = await bcrypt.compare(req.body.password, user.password);
-            if(matchPassword){
-                res.render('./Admin/adminDashboard.ejs', {layout : adminLayout})
-            }else{
-                next("Password not matched")
-            }
-        }else{
-            next("User not Matched")
-        }
-
-    } catch (error) {
-        console.log(error);
-        
-    }
-        
-
-})
 
 
 module.exports = router;
