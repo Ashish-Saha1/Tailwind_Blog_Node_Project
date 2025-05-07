@@ -6,7 +6,9 @@ const multer = require('multer');
 const path = require('path');
 const bcrypt = require('bcrypt')
 const fs = require('fs');
-const { Aggregate } = require('mongoose');
+const jwt = require('jsonwebtoken');
+
+
 
 
 
@@ -68,40 +70,8 @@ router.get('/login', async (req,res)=>{
 //Post method Login Page 
 router.post('/login', async (req,res,next)=>{
     
-   
     try {
 
-        // let perPage = 5;
-        // let page = parseInt(req.query.page) || 1;
-        // let totalPost = await Post.countDocuments()
-        // let nextPage = page + 1;
-        
-        // //let hasNextPage = totalPost / page - perPage > 0
-        // let hasNextPage = totalPost > page * perPage;
-
-        // const posts = await Post.aggregate(
-        //     [
-        //         {$sort:{createdAt: -1}},
-        //         {$skip:  (page-1) * perPage},
-        //         {$limit : perPage},
-        //     ]
-        // )
-
-        const perPage = 10;
-    const page = parseInt(req.query.page) || 1;
-    const totalDocument = await Post.countDocuments();
-    let nextPages = page + 1;
-    let hasNextPages = totalDocument > page * perPage;
-
-    const postsData = await Post.aggregate(
-        [
-            {$sort: {createdAt: -1}},
-            { $skip: (page - 1) * perPage },
-            {$limit: perPage},
-        ]
-    )
-
-        
         const user = await User.findOne(
             {$or:[{"username": req.body.username},
                 {"email": req.body.username},
@@ -109,15 +79,18 @@ router.post('/login', async (req,res,next)=>{
                 
             })
 
+            //Jsonwebtoken
+            const token = jwt.sign({user: req.body.username}, process.env.JWT_SECRET_KEY);
+            res.cookie('token', token, {httpOnly: true})
+            
+            const cookieToken = req.cookies.token;
+            res.locals.token = cookieToken? cookieToken: null;
+            
+
         if(user){
             const matchPassword = await bcrypt.compare(req.body.password, user.password);
             if(matchPassword){
-                res.render('./Admin/adminDashboard.ejs', 
-                    {   postsData, 
-                        layout : adminLayout, 
-                        nextPages : hasNextPages ? nextPages : null
-                    }
-                )
+                res.redirect('dashboard') 
             }else{
                 next("Password not matched")
             }
@@ -127,11 +100,38 @@ router.post('/login', async (req,res,next)=>{
 
     } catch (error) {
         console.log(error);
-        
+        next(error)
     }
         
 
 })
+
+
+router.get('/dashboard', async (req, res) => {
+    try {
+        let perPage = 5;
+        let page = parseInt(req.query.page) || 1;
+
+        let totalPost = await Post.countDocuments();
+        let nextPage = page + 1;
+        let hasNextPage = totalPost > page * perPage;
+
+        const posts = await Post.aggregate([
+            { $sort: { createdAt: -1 } },
+            { $skip: (page - 1) * perPage },
+            { $limit: perPage },
+        ]);
+
+        res.render('./Admin/adminDashboard.ejs', {
+            posts,
+            layout: adminLayout,
+            nextPage: hasNextPage ? nextPage : null
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+});
 
 
 

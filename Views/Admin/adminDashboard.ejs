@@ -1,19 +1,21 @@
 
-<h1>Admin Dashboard</h1>
+<!-- Title -->
+
+<h1 class="text-3xl text-center underline mb-16">Admin Dashboard</h1>
 
 <!-- Posts Section Starts Here --> 
 
 <div class="posts max-w-[64rem]  mx-auto my-10 group px-6">
     <h1 class="text-3xl font-bold mb-10">Latest Posts</h1>
 
-    <% postsData.forEach(element => { %>
+    <% posts.forEach(element => { %>
         <div class="post md:flex justify-between items-center cursor-pointer py-5 border-b border-sky-200 hover:blur-none group-hover:blur-[2px] hover:!blur-none transition-all">
             <p class="text-[1.5rem] font-semibold mb-3"><%=  element.title %> </p> 
             
             <div class="flex gap-3">
                 <span class="bg-black text-amber-50 px-3 py-0.5 rounded"><a href="">Edit</a></span>
                 <span class="bg-black text-amber-50 px-3 py-0.5 rounded"><a href="">Delete</a></span>
-                <span class="text-[1rem] "><%= element.createdAt.toDateString() %></span>
+                
             </div>
 
         </div>
@@ -24,11 +26,11 @@
 
     
 
+<!-- Pagination Starts -->
 
-
-<% if (nextPages) { %>
+<% if (nextPage) { %>
     <div class=" max-w-[64rem] mx-auto px-6">
-        <a href="/admin/login/?page=<%= nextPages %> " class="text-2xl text-gray-600" >View older posts &lt</a>
+        <a href="/admin/dashboard?page=<%= nextPage %> " class="text-2xl text-gray-600" >View older posts &lt</a>
     </div>
 <% } %> 
 
