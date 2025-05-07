@@ -3,8 +3,48 @@ const router = express.Router();
 const Post = require('../Model/post');
 const User = require('../Model/user');
 const multer = require('multer');
+const path = require('path');
+const bcrypt = require('bcrypt')
 
-const upload = multer({ dest: './Public/uploads/' })
+
+
+// // const upload = multer({ dest: './Public/uploads/' });
+
+// const storage = multer.diskStorage({
+//     destination : function(req,file,cb){
+//         cb(null, './public/uploads')
+//     },
+//     filename : function(req,file,cb){
+//         let extName = path.extname(file.originalname);
+//         const fileName = file.originalname
+//             .replace(extName, "")
+//             .toLowerCase()
+//             .split(" ")
+//             .join("_") +
+//             "-" + Date.now()
+
+//             cb(null, fileName + extName)
+//     }
+// })
+
+// const upload = multer({
+//      storage: storage,
+//      limits : {
+//         fileSize : 1000000
+//      },
+//      fileFilter : (req,file, cb)=>{
+//         if(file.mimetype === "image/jpeg" || "image/jpg" || "image/png"){
+//             cb(null, true)
+//         }
+//         else{
+//             console.log('File type not matched');
+            
+            
+//         }
+        
+//      }
+    
+//     })
 
 //Get Method Home page
 router.get('/', async (req,res)=>{
@@ -49,40 +89,80 @@ router.get('/about', async (req,res)=>{
     
 })
 
-//Get method Login Page 
-router.get('/login', async (req,res)=>{
-    const locals = {
-        title: "login",
-        description : "This is a blog site using tailwind"
-    }
-    res.render('login',{locals})
+// //Get method Login Page 
+// router.get('/login', async (req,res)=>{
+//     const locals = {
+//         title: "login",
+//         description : "This is a blog site using tailwind"
+//     }
+//     res.render('login',{locals})
     
-})
+// })
 
-//Get method Register Page 
-router.get('/register', async (req,res)=>{
-    const locals = {
-        title: "Register",
-        description : "This is a blog site using tailwind"
-    }
-    res.render('register',{locals})
+// //Get method Register Page 
+// router.get('/register', async (req,res)=>{
+//     const locals = {
+//         title: "Register",
+//         description : "This is a blog site using tailwind"
+//     }
+//     res.render('register',{locals})
     
-})
+// })
 
-//Post method Register Page 
-router.post('/register', upload.single('avater'), async (req,res)=>{
+// //Post method Register Page 
+// router.post('/register', upload.single('avatar'), async (req,res,next)=>{
+
+//     const hashed = await bcrypt.hash(req.body.password, 10)
+//     const formData = {
+//         name : req.body.name,
+//         username : req.body.username,
+//         email : req.body.email,
+//         phone : req.body.phone,
+//         password : hashed,
+//         avatar : req.file.filename,
+//     }
+
+//     try {
+//         const user =  new User(formData);
+//         const userCreate = user.save()
+//         res.redirect('login')
+//     } catch (error) {
+//         console.log(`Error Catched register: ${error}`);
+//         next("Error in Register")
+//     }
     
-    const {name, username, email, phone, password} = req.body;
+// })
 
-    console.log(name, username, email, phone, password, req.file);
+
+// //Post method Login Page 
+// router.post('/login', async (req,res,next)=>{
     
-    
-    res.send('register')
-    
-})
+//     try {
+//         const user = await User.findOne(
+//             {$or:[{"username": req.body.username},
+//                 {"email": req.body.username},
+//                 {"phone": req.body.username}]
+                
+//             })
 
+//         if(user){
+//             const matchPassword = await bcrypt.compare(req.body.password, user.password);
+//             if(matchPassword){
+//                 res.render('./Admin/dashboard.ejs', {})
+//             }else{
+//                 next("Password not matched")
+//             }
+//         }else{
+//             next("User not Matched")
+//         }
 
+//     } catch (error) {
+//         console.log(error);
+        
+//     }
+        
 
+// })
 
 
 

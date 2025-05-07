@@ -1,0 +1,160 @@
+const express = require('express');
+const router = express.Router();
+const Post = require('../Model/post');
+const User = require('../Model/user');
+const multer = require('multer');
+const path = require('path');
+const bcrypt = require('bcrypt')
+const fs = require('fs');
+
+
+
+const adminLayout = "../Views/Layouts/admin.ejs"
+
+
+// const upload = multer({ dest: './Public/uploads/' });
+
+const storage = multer.diskStorage({
+    destination : function(req,file,cb){
+        cb(null, './public/uploads')
+    },
+    filename : function(req,file,cb){
+        let extName = path.extname(file.originalname);
+        const fileName = file.originalname
+            .replace(extName, "")
+            .toLowerCase()
+            .split(" ")
+            .join("_") +
+            "-" + Date.now()
+
+            cb(null, fileName + extName)
+    }
+})
+
+const upload = multer({
+     storage: storage,
+     limits : {
+        fileSize : 1000000
+     },
+     fileFilter : (req,file, cb)=>{
+        if(file.mimetype === "image/jpeg" || "image/jpg" || "image/png"){
+            cb(null, true)
+        }
+        else{
+            console.log('File type not matched');
+            
+            
+        }
+        
+     }
+    
+    })
+
+
+//Get method Login Page 
+router.get('/login', async (req,res)=>{
+    const locals = {
+        title: "login",
+        description : "This is a blog site using tailwind"
+    }
+    res.render('Admin/login',{locals, layout: adminLayout})
+    //res.send("Hellow loging")
+})
+
+//Get method Register Page 
+router.get('/register', async (req,res)=>{
+    const locals = {
+        title: "Register",
+        description : "This is a blog site using tailwind"
+    }
+    res.render('Admin/register',{locals, layout : adminLayout})
+    
+})
+
+
+//Post method Register Page 
+router.post('/register', upload.single('avatar'), async (req,res,next)=>{
+
+    const deleteUploadedFile = async()=>{
+        if(req.file){
+            const filePath = path.join(__dirname,"../uploads",req.file.filename);
+            try {
+                await fs.unlink(filePath)
+            } catch (error) {
+                console.log(filePath);
+                
+                console.log(`Failed to delete Uploaded file, ${error}`);
+                
+            }
+        }
+    }
+
+    const {name,username,email,phone,password} = req.body;
+        await deleteUploadedFile()
+    if(!name || !username || !email || !phone || !password){
+        return res.status(400).send('All field required')
+    }
+
+    const existUsername = await User.findOne({$or:[{username: req.body.username},{email: req.body.email},{phone: req.body.phone}]})
+    if(existUsername){
+        return res.status(400).send("Username or email or phone is already exist")
+    }
+
+
+    const hashed = await bcrypt.hash(req.body.password, 10)
+    const formData = {
+        name : req.body.name,
+        username : req.body.username,
+        email : req.body.email,
+        phone : req.body.phone,
+        password : hashed,
+        avatar : req.file? req.file.filename: null,
+    }
+
+    try {
+        
+            const user =  new User(formData);
+            const userCreate = await user.save()
+            res.redirect('login')
+        
+               
+    } catch (error) {
+        console.log(`Error Catched register: ${error}`);
+        next("Error in Register: Error Is", error)
+    }
+    
+})
+
+
+//Post method Login Page 
+router.post('/login', async (req,res,next)=>{
+    
+    try {
+        const user = await User.findOne(
+            {$or:[{"username": req.body.username},
+                {"email": req.body.username},
+                {"phone": req.body.username}]
+                
+            })
+
+        if(user){
+            const matchPassword = await bcrypt.compare(req.body.password, user.password);
+            if(matchPassword){
+                res.render('./Admin/adminDashboard.ejs', {layout : adminLayout})
+            }else{
+                next("Password not matched")
+            }
+        }else{
+            next("User not Matched")
+        }
+
+    } catch (error) {
+        console.log(error);
+        
+    }
+        
+
+})
+
+
+module.exports = router;

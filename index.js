@@ -6,10 +6,12 @@ const expressLayouts = require('express-ejs-layouts');
 const ejs = require('ejs')
 
 //Internal imports
-const mainRoutes = require('./Server/Routes/main')
-const dbConnect = require('./Server/Config/db')
+const mainRoutes = require('./Server/Routes/main');
+const adminRoutes = require('./Server/Routes/admin');
+const dbConnect = require('./Server/Config/db');
+const multer = require('multer');
 
-
+const PORT =  process.env.PORT
 
 //database connect
 dbConnect()
@@ -34,8 +36,29 @@ app.use(express.static('Public'))
 
 //Routes
 app.use("/",mainRoutes)
+app.use("/admin",adminRoutes)
 
-const PORT =  process.env.PORT
+
+
+//Error handling no routes match
+
+app.use((req,res,next)=>{
+    next('No Routes found')
+})
+
+
+//Error Handling 
+
+app.use((err,req,res,next)=>{
+    if(res.headersSent){
+        next("There was a problem as hopefully Headers already sent")
+    }else if(err instanceof multer.MulterError){
+        
+        next('Multer error catched')
+    }
+    res.send(`Error Catched is: ${err}` )
+})
+
 
 app.listen(PORT, ()=>{
     console.log(`listing on Port ${PORT}`)
