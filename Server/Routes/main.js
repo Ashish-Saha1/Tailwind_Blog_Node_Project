@@ -56,6 +56,15 @@ router.get('/about', async (req,res)=>{
 })
 
 
+//Get method Post Page 
+router.get('/post/:id', async (req,res)=>{
+    const posts = await Post.findOne({'_id': req.params.id})
+
+    res.render('post', {postData:posts})
+    
+})
+
+
 
 
 

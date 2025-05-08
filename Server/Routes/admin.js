@@ -60,7 +60,10 @@ router.get('/login', async (req,res)=>{
         title: "login",
         description : "This is a blog site using tailwind"
     }
-
+    //Here cookieToken is passed because adminheader page cookieToken not found in login because show error
+    //Now problem is solved by passed cookieToken another passed in dashboard route to loggled sign in-out
+    // const cookieToken = req.cookies.token
+    
     res.render('Admin/login',{locals, layout: adminLayout})
     
 })
@@ -78,16 +81,16 @@ router.post('/login', async (req,res,next)=>{
                 {"phone": req.body.username}]
                 
             })
-
-            //Jsonwebtoken
-            const token = jwt.sign({user: req.body.username}, process.env.JWT_SECRET_KEY);
-            res.cookie('token', token, {httpOnly: true})
-            
-            const cookieToken = req.cookies.token;
-            res.locals.token = cookieToken? cookieToken: null;
-            
+console.log(user)
+           
+        
 
         if(user){
+             //Jsonwebtoken
+             const token = jwt.sign({username: req.body.username, userId: user._id, name: user.name}, process.env.JWT_SECRET_KEY);
+             res.cookie('token', token, {httpOnly: true})
+             console.log(token)
+             
             const matchPassword = await bcrypt.compare(req.body.password, user.password);
             if(matchPassword){
                 res.redirect('dashboard') 
@@ -107,6 +110,14 @@ router.post('/login', async (req,res,next)=>{
 })
 
 
+//Posr method Log Out route
+
+router.get('/logout', (req,res,next)=>{
+    res.clearCookie('token');
+    res.redirect('login')
+})
+
+
 router.get('/dashboard', async (req, res) => {
     try {
         let perPage = 5;
@@ -121,6 +132,7 @@ router.get('/dashboard', async (req, res) => {
             { $skip: (page - 1) * perPage },
             { $limit: perPage },
         ]);
+
 
         res.render('./Admin/adminDashboard.ejs', {
             posts,

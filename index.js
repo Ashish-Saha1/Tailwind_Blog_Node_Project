@@ -30,7 +30,12 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser())
 
+//For token
 
+app.use((req, res, next) => {
+    res.locals.cookieToken = req.cookies.token || null; // or any value
+    next();
+});
 
 
 app.use(express.static('Public'))

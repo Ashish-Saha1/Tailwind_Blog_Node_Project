@@ -34,15 +34,17 @@
                     id="">
             </form>
 
-            <!-- <a href="/login">
-                <input class="bg-linear-to-l from-sky-300 to-emerald-100 px-3.5 py-1 cursor-pointer rounded-lg shadow font-bold text-gray-600 hover:text-gray-500 "
-                type="button" value="Sign In">
-            </a>
-            -->
+    
+              <%# Here cookieToken is from login & dashboard route %>
+            <% if (cookieToken) { %>
+                <a href="/admin/logout" id="signIn-btn" class="bg-linear-to-l from-sky-300 to-emerald-100 px-3.5 py-1 cursor-pointer rounded-lg shadow font-bold text-gray-600 hover:text-gray-500 ">Log Out</a>
+            <% }  else { %>
+                <a href="/admin/login" id="signIn-btn" class="bg-linear-to-l from-sky-300 to-emerald-100 px-3.5 py-1 cursor-pointer rounded-lg shadow font-bold text-gray-600 hover:text-gray-500 ">Sing In</a>
+            <% } %>
             
-           
-            <a href="/admin/login" id="signIn-btn" class="bg-linear-to-l from-sky-300 to-emerald-100 px-3.5 py-1 cursor-pointer rounded-lg shadow font-bold text-gray-600 hover:text-gray-500 ">Sign In</a>  
-
+            
+            
+             
 
         </div>
 
