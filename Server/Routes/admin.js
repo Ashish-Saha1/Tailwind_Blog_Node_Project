@@ -89,7 +89,7 @@ console.log(user)
              //Jsonwebtoken
              const token = jwt.sign({username: req.body.username, userId: user._id, name: user.name}, process.env.JWT_SECRET_KEY);
              res.cookie('token', token, {httpOnly: true})
-             console.log(token)
+             
              
             const matchPassword = await bcrypt.compare(req.body.password, user.password);
             if(matchPassword){
@@ -211,6 +211,21 @@ router.post('/register', upload.single('avatar'), async (req,res,next)=>{
     }
     
 })
+
+
+
+//Post get route for details post
+
+router.get('/post/:id', async (req,res,next)=>{
+    try {
+        const postData = await Post.findOne({_id: req.params.id});
+
+        res.render('Admin/post', {postData})
+    } catch (error) {
+        
+    }
+})
+
 
 
 

@@ -15,9 +15,20 @@
                 <li>
                     <a class="hover:text-gray-400 duration-300" href="#">Project</a>
                 </li>
+                
                 <li>
-                    <a class="hover:text-gray-400 duration-300" href="/admin/login">Admin Pannel</a>
+                    <a class="hover:text-gray-400 duration-300" 
+                    href=" 
+                    <% if (cookieToken) { %>
+                    /admin/dashboard
+                    <% } else{ %>
+                        /admin/login
+                    <%  }   %>
+                    
+                    "
+                    >Admin Pannel</a>
                 </li>
+
                 <li>
                     <a class="hover:text-gray-400 duration-300" href="/about">About</a>
                 </li>

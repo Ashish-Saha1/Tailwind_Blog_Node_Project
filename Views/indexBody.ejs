@@ -17,12 +17,19 @@
 <div class="posts max-w-[64rem]  mx-auto my-10 group px-6">
     <h1 class="text-3xl font-bold mb-10">Latest Posts</h1>
 
-    <% posts.forEach(element => { %>
+    <% posts.forEach(post => { %>
         <div class="post md:flex justify-between items-center cursor-pointer py-5 border-b border-sky-200 hover:blur-none group-hover:blur-[2px] hover:!blur-none transition-all">
-        <a href="/post/<%= element._id %>">   <p class="text-[1.5rem] font-semibold mb-3"><%=  element.title %> </p> </a> 
-            <span class="text-[1rem] "><%= element.createdAt.toDateString() %></span>
+        <a href="/post/<%=post._id%>"> <p class="text-[1.5rem] font-semibold mb-3"><%=  post.title %> </p> </a> 
+            <span class="text-[1rem] "><%= post.createdAt.toDateString() %></span>
+            
+    
         </div>
     <% }) %>
+
+   
+
+
+
 
 </div>
 

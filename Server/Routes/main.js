@@ -57,11 +57,40 @@ router.get('/about', async (req,res)=>{
 
 
 //Get method Post Page 
-router.get('/post/:id', async (req,res)=>{
-    const posts = await Post.findOne({'_id': req.params.id})
-
-    res.render('post', {postData:posts})
+// router.get('/post/:postId', async (req,res)=>{
+//     const postId = await Post.findOne({_id: req.params.postId})
+//     console.log(postId);
     
+//     res.render('post', {postId:postId})
+    
+// })
+
+router.get('/post/:id', async (req,res,next)=>{
+    try {
+        
+        const postData = await Post.findOne({_id : req.params.id})
+
+        const locals = {
+            title: postData.title,
+            description: "This is a Post page of this site"
+        }
+
+    res.render('post', {
+        postData: postData,
+        locals: locals,
+        currentRoute : "/post/:id",
+    })
+    
+    } catch (error) {
+        next(error)
+    }
+})
+
+
+router.get('/check', async(req,res)=>{
+    const posts = await Post.findOne({'title': "Express JS"})
+
+    res.render('post', {posts})
 })
 
 
