@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../Model/post');
 const User = require('../Model/user');
+const authGurd = require('../../Helper/authGurd');
+
 const multer = require('multer');
 const path = require('path');
 const bcrypt = require('bcrypt')

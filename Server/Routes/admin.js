@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../Model/post');
 const User = require('../Model/user');
+const authGurd = require('../../Helper/authGurd');
+
 const multer = require('multer');
 const path = require('path');
 const bcrypt = require('bcrypt')
@@ -87,7 +89,7 @@ console.log(user)
 
         if(user){
              //Jsonwebtoken
-             const token = jwt.sign({username: req.body.username, userId: user._id, name: user.name}, process.env.JWT_SECRET_KEY);
+             const token = jwt.sign({user: req.body.username, userId: user._id, name: user.name}, process.env.JWT_SECRET_KEY);
              res.cookie('token', token, {httpOnly: true})
              
              
@@ -118,7 +120,7 @@ router.get('/logout', (req,res,next)=>{
 })
 
 
-router.get('/dashboard', async (req, res) => {
+router.get('/dashboard',authGurd, async (req, res) => {
     try {
         let perPage = 5;
         let page = parseInt(req.query.page) || 1;
@@ -136,6 +138,8 @@ router.get('/dashboard', async (req, res) => {
 
         res.render('./Admin/adminDashboard.ejs', {
             posts,
+            user: req.user,
+            name: req.name,
             layout: adminLayout,
             nextPage: hasNextPage ? nextPage : null
         });
@@ -216,7 +220,7 @@ router.post('/register', upload.single('avatar'), async (req,res,next)=>{
 
 //Post get route for details post
 
-router.get('/post/:id', async (req,res,next)=>{
+router.get('/post/:id', authGurd, async (req,res,next)=>{
     try {
         const postData = await Post.findOne({_id: req.params.id});
 
