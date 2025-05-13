@@ -8,9 +8,8 @@ const authGurd = async(req,res,next)=>{
         const token = req.cookies.token;
         if(token){
        const decode = await jwt.verify(token, process.env.JWT_SECRET_KEY);
-        req.user = decode.user;
-        req.userId = decode.userId;
-        req.name = decode.name;
+        req.user = decode;
+
         next()
         } else{
             res.send('Token not available in authGurd')

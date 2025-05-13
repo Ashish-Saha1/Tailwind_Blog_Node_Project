@@ -21,9 +21,16 @@
                 <li>
                     <a class="hover:text-gray-400 duration-300" href="/about">About</a>
                 </li>
+
+               <% if (cookieToken) { %>
+                <%# Blank no item show %>
+               <% }else{ %>
                 <li>
                     <a class="hover:text-gray-400 duration-300" href="#">Contact A</a>
                 </li>
+               <% }  %>
+                
+
             </ul>
         </div>
 

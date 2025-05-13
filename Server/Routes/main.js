@@ -48,11 +48,13 @@ router.get('/', async (req,res)=>{
 
 
 //Get method About Page 
-router.get('/about', async (req,res)=>{
+router.get('/about',authGurd, async (req,res)=>{
     const locals = {
         title: "About Page",
         description : "This is a blog site using tailwind"
     }
+   
+    
     res.render('about.ejs',{locals})
     
 })

@@ -89,7 +89,7 @@ console.log(user)
 
         if(user){
              //Jsonwebtoken
-             const token = jwt.sign({user: req.body.username, userId: user._id, name: user.name}, process.env.JWT_SECRET_KEY);
+             const token = jwt.sign({user}, process.env.JWT_SECRET_KEY);
              res.cookie('token', token, {httpOnly: true})
              
              
@@ -138,8 +138,6 @@ router.get('/dashboard',authGurd, async (req, res) => {
 
         res.render('./Admin/adminDashboard.ejs', {
             posts,
-            user: req.user,
-            name: req.name,
             layout: adminLayout,
             nextPage: hasNextPage ? nextPage : null
         });

@@ -37,6 +37,14 @@ app.use((req, res, next) => {
 });
 
 
+//For logged in user to access in any route
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user || null;
+    console.log("current User",res.locals.currentUser)
+    next();
+  });
+
+
 app.use(express.static('Public'))
 
 //Routes

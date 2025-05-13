@@ -32,9 +32,15 @@
                 <li>
                     <a class="hover:text-gray-400 duration-300" href="/about">About</a>
                 </li>
-                <li>
-                    <a class="hover:text-gray-400 duration-300" href="#">Contact</a>
-                </li>
+
+                <% if (cookieToken) { %>
+                    <%# Blank no item show %>
+                    <% }else{ %>
+                    <li>
+                        <a class="hover:text-gray-400 duration-300" href="#">Contact A</a>
+                    </li>
+                    <% }  %>
+
             </ul>
         </div>
 
@@ -54,6 +60,7 @@
             <%# Here cookieToken is from login & dashboard route %>
             <% if (cookieToken) { %>
                 <a href="/admin/logout" id="signIn-btn" class="bg-linear-to-l from-sky-300 to-emerald-100 px-3.5 py-1 cursor-pointer rounded-lg shadow font-bold text-gray-600 hover:text-gray-500 ">Log Out</a>
+                <h1>hellow</h1>
             <% }  else { %>
                 <a href="/admin/login" id="signIn-btn" class="bg-linear-to-l from-sky-300 to-emerald-100 px-3.5 py-1 cursor-pointer rounded-lg shadow font-bold text-gray-600 hover:text-gray-500 ">Sing In</a>
             <% } %>

@@ -1,12 +1,15 @@
 
 <!-- Title -->
 
-<h1 class="text-3xl text-center underline mb-16">Admin Dashboard, User: <%= name %></h1>
+<h1 class="text-3xl text-center underline mb-16">Admin Dashboard, User: </h1>
 
 <!-- Posts Section Starts Here --> 
 
 <div class="posts max-w-[64rem]  mx-auto my-10 group px-6">
-    <h1 class="text-3xl font-bold mb-10">Latest Posts</h1>
+    <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold mb-10">Latest Posts</h1>
+        <h2 class="bg-black text-amber-50 px-3 py-0.5 rounded"><a href="">Add Post</a></h2>
+    </div>
 
     <% posts.forEach(element => { %>
         <div class="post md:flex justify-between items-center cursor-pointer py-5 border-b border-sky-200 hover:blur-none group-hover:blur-[2px] hover:!blur-none transition-all">
