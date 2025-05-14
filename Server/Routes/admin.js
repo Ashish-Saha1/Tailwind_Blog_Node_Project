@@ -83,16 +83,18 @@ router.post('/login', async (req,res,next)=>{
                 {"phone": req.body.username}]
                 
             })
-console.log(user)
-           
+
+            
+            
         
 
         if(user){
              //Jsonwebtoken
-             const token = jwt.sign({user}, process.env.JWT_SECRET_KEY);
-             res.cookie('token', token, {httpOnly: true})
-             
-             
+            ///const token = jwt.sign({user}, process.env.JWT_SECRET_KEY);
+            const token = jwt.sign({user}, process.env.JWT_SECRET_KEY);
+            res.cookie('token', token, {httpOnly: true})
+            
+            
             const matchPassword = await bcrypt.compare(req.body.password, user.password);
             if(matchPassword){
                 res.redirect('dashboard') 

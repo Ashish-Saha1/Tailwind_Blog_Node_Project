@@ -11,6 +11,9 @@ const adminRoutes = require('./Server/Routes/admin');
 const dbConnect = require('./Server/Config/db');
 const multer = require('multer');
 const cookieParser = require('cookie-parser');
+const authGurd = require('./Helper/authGurd');
+
+
 
 const PORT =  process.env.PORT
 
@@ -30,6 +33,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser())
 
+//For decode req.user from jwt
+app.use(authGurd)
+
 //For token access in any route
 app.use((req, res, next) => {
     res.locals.cookieToken = req.cookies.token || null; // or any value
@@ -37,12 +43,7 @@ app.use((req, res, next) => {
 });
 
 
-//For logged in user to access in any route
-app.use((req, res, next) => {
-    res.locals.currentUser = req.user || null;
-    console.log("current User",res.locals.currentUser)
-    next();
-  });
+
 
 
 app.use(express.static('Public'))
@@ -50,6 +51,15 @@ app.use(express.static('Public'))
 //Routes
 app.use("/",mainRoutes)
 app.use("/admin",adminRoutes)
+
+
+//For logged in user to access in any route
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+        
+    next();
+  });
+
 
 
 
