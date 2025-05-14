@@ -11,7 +11,7 @@ const adminRoutes = require('./Server/Routes/admin');
 const dbConnect = require('./Server/Config/db');
 const multer = require('multer');
 const cookieParser = require('cookie-parser');
-const authGurd = require('./Helper/authGurd');
+const decodeUersFromToken = require('./Helper/decodeUersFromToken')
 
 
 
@@ -20,7 +20,7 @@ const PORT =  process.env.PORT
 //database connect
 dbConnect()
 
-
+app.use(express.static('Public'))
 
 //Layouts
 app.use(expressLayouts);
@@ -34,7 +34,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser())
 
 //For decode req.user from jwt
-app.use(authGurd)
+app.use(decodeUersFromToken)
 
 //For token access in any route
 app.use((req, res, next) => {
@@ -43,22 +43,21 @@ app.use((req, res, next) => {
 });
 
 
+//For logged in user to access in any route
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;   
+    next();
+  });
 
 
 
-app.use(express.static('Public'))
 
 //Routes
 app.use("/",mainRoutes)
 app.use("/admin",adminRoutes)
 
 
-//For logged in user to access in any route
-app.use((req, res, next) => {
-    res.locals.currentUser = req.user;
-        
-    next();
-  });
+
 
 
 
