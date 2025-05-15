@@ -39,7 +39,7 @@ const storage = multer.diskStorage({
 const upload = multer({
      storage: storage,
      limits : {
-        fileSize : 1000000
+        fileSize : 5000000
      },
      fileFilter : (req,file, cb)=>{
         if(file.mimetype === "image/jpeg" || "image/jpg" || "image/png"){
@@ -123,6 +123,11 @@ router.get('/logout', (req,res,next)=>{
 
 
 router.get('/dashboard',authGurd, async (req, res) => {
+    const locals = {
+        title: "Admin Dashboard",
+        description : "This is a blog site using tailwind"
+    }
+
     try {
         let perPage = 5;
         let page = parseInt(req.query.page) || 1;
@@ -140,6 +145,7 @@ router.get('/dashboard',authGurd, async (req, res) => {
 
         res.render('./Admin/adminDashboard.ejs', {
             posts,
+            locals,
             layout: adminLayout,
             nextPage: hasNextPage ? nextPage : null
         });
@@ -172,22 +178,22 @@ router.post('/register', upload.single('avatar'), async (req,res,next)=>{
                 await fs.promises.unlink(filePath)
                 console.log('deleted')
             } catch (error) {
-                console.log(filePath);
-                
                 console.log(`Failed to delete Uploaded file, ${error}`);
-                
+                                
             }
         }
     }
 
     const {name,username,email,phone,password} = req.body;
-        await deleteUploadedFile()
+       // await deleteUploadedFile()
     if(!name || !username || !email || !phone || !password){
+        await deleteUploadedFile()
         return res.status(400).send('All field required')
     }
 
     const existUsername = await User.findOne({$or:[{username: req.body.username},{email: req.body.email},{phone: req.body.phone}]})
     if(existUsername){
+        await deleteUploadedFile()
         return res.status(400).send("Username or email or phone is already exist")
     }
 
@@ -221,14 +227,52 @@ router.post('/register', upload.single('avatar'), async (req,res,next)=>{
 //Post get route for details post
 
 router.get('/post/:id', authGurd, async (req,res,next)=>{
+    const locals = {
+        title: "Post Id",
+        description : "This is a blog site using tailwind"
+    }
     try {
         const postData = await Post.findOne({_id: req.params.id});
 
-        res.render('Admin/post', {postData})
+        res.render('Admin/post', {postData, locals})
     } catch (error) {
         
     }
 })
+
+
+
+//Add a new Post
+
+router.get('/add-post', (req,res,next)=>{
+    res.render('Admin/add-post')
+})
+
+
+// Edit / Update Post
+
+// router.put('/post/:id', authGurd, async (req,res,next)=>{
+//     const locals = {
+//         title: "Edit Post Id",
+//         description : "This is a blog site using tailwind"
+//     }
+
+//     try {
+//         const postData = await Post.updateOne(
+//             {_id: req.params.id},
+//             {$set:{}}
+//         );
+
+//         res.redirect('adminDashboard')
+//     } catch (error) {
+        
+//     }
+    
+    
+// })
+
+
+
 
 
 
