@@ -236,40 +236,59 @@ router.get('/post/:id', authGurd, async (req,res,next)=>{
 
         res.render('Admin/post', {postData, locals})
     } catch (error) {
-        
+        next(error)
     }
 })
 
 
 
-//Add a new Post
+// Get route Add a new Post
 
-router.get('/add-post', (req,res,next)=>{
-    res.render('Admin/add-post')
+router.get('/add-post', async(req,res,next)=>{
+     const locals = {
+        title: "Add Post",
+        description : "This is a blog site using tailwind"
+    }
+
+
+    res.render('Admin/add-post', {locals})
 })
 
 
-// Edit / Update Post
+// Post route Add a new Post Save data
 
-// router.put('/post/:id', authGurd, async (req,res,next)=>{
-//     const locals = {
-//         title: "Edit Post Id",
-//         description : "This is a blog site using tailwind"
-//     }
-
-//     try {
-//         const postData = await Post.updateOne(
-//             {_id: req.params.id},
-//             {$set:{}}
-//         );
-
-//         res.redirect('adminDashboard')
-//     } catch (error) {
+router.post('/add-post',authGurd, async(req,res,next)=>{
+        const {title, description} = req.body;
+    try {
+        if(!title || !description){
+             res.send("All fields required")
+        }else{    
+            const post = new Post({title, description})
+            const postData = await post.save()
+            console.log('Added Data successfully')
+            res.redirect('dashboard')
+        }
         
-//     }
+    }   catch (error) {
+        next(error)
+    }
+
     
+})
+
+
+//get method Edit / Update Post
+
+router.get('/edit-post/:id', authGurd, async (req,res,next)=>{
+     const locals = {
+        title: "Add Post",
+        description : "This is a blog site using tailwind"
+    }
     
-// })
+
+    res.render('Admin/edit-post', {locals})
+    
+})
 
 
 
