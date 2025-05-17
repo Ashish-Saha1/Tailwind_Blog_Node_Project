@@ -17,8 +17,10 @@
             <a href="/admin/post/<%= element._id %>"><p class="text-[1.5rem] font-semibold mb-3"><%=  element.title %> </p> </a>
             
             <div class="flex gap-3">
-                <span class="bg-black text-amber-50 px-3 py-0.5 rounded"><a href="">Edit</a></span>
-                <span class="bg-black text-amber-50 px-3 py-0.5 rounded"><a href="">Delete</a></span>
+                <span class="bg-black text-amber-50 px-3 py-0.5 rounded"><a href="/admin/edit-post/<%= element._id %>">Edit</a></span>
+                <form action="/admin/delete-post/<%= element._id %>?_method=DELETE" method="POST">
+                    <input type="submit" value="Delete" class="bg-black text-amber-50 px-3 py-0.5 rounded">
+                </form>
                 
             </div>
 

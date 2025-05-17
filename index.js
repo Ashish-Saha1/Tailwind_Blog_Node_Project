@@ -4,14 +4,18 @@ const express = require('express');
 const app = express();
 const expressLayouts = require('express-ejs-layouts');
 const ejs = require('ejs')
+const multer = require('multer');
+const cookieParser = require('cookie-parser');
+const decodeUersFromToken = require('./Helper/decodeUersFromToken')
+const methodOverride = require('method-override');
+
+
 
 //Internal imports
 const mainRoutes = require('./Server/Routes/main');
 const adminRoutes = require('./Server/Routes/admin');
 const dbConnect = require('./Server/Config/db');
-const multer = require('multer');
-const cookieParser = require('cookie-parser');
-const decodeUersFromToken = require('./Helper/decodeUersFromToken')
+
 
 
 
@@ -32,6 +36,9 @@ app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser())
+
+//Method Override
+app.use(methodOverride("_method"))
 
 //For decode req.user from jwt
 app.use(decodeUersFromToken)

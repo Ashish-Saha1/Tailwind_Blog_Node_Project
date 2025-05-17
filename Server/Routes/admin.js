@@ -244,7 +244,7 @@ router.get('/post/:id', authGurd, async (req,res,next)=>{
 
 // Get route Add a new Post
 
-router.get('/add-post', async(req,res,next)=>{
+router.get('/add-post', authGurd, async(req,res,next)=>{
      const locals = {
         title: "Add Post",
         description : "This is a blog site using tailwind"
@@ -284,10 +284,59 @@ router.get('/edit-post/:id', authGurd, async (req,res,next)=>{
         title: "Add Post",
         description : "This is a blog site using tailwind"
     }
-    
+    try {
+        const postData = await Post.findOne({_id: req.params.id});
 
-    res.render('Admin/edit-post', {locals})
+        res.render('Admin/edit-post', {postData, locals})
+    } catch (error) {
+        next(error)
+    }
+
     
+    
+})
+
+
+
+//PUT method Edit / Update Post
+
+router.put('/edit-post/:id', authGurd, async (req,res,next)=>{
+    
+    try {
+        const postData = await Post.findByIdAndUpdate(
+            {_id: req.params.id}, 
+            {$set:{ title: req.body.title,
+                    description: req.body.description,
+                    updatedAt : Date.now()
+            }
+            },  
+        );
+
+        res.redirect('/admin/dashboard')
+
+    } catch (error) {
+        next(error)
+    }
+
+})
+
+
+
+//Delete method Delete Post
+
+router.delete('/delete-post/:id', authGurd, async (req,res,next)=>{
+    
+    try {
+        const deleteData = await Post.findByIdAndDelete({_id: req.params.id})
+        
+        console.log('Deleted from delete method');
+        
+        res.redirect('/admin/dashboard')
+        //res.send(deleteData)
+    } catch (error) {
+        next(error)
+    }
+
 })
 
 
