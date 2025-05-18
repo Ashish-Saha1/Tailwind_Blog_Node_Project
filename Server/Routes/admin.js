@@ -9,6 +9,7 @@ const path = require('path');
 const bcrypt = require('bcrypt')
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
+const { registerValidator,validationResult} = require('../../Helper/userValidator');
 
 
 
