@@ -9,7 +9,7 @@ const path = require('path');
 const bcrypt = require('bcrypt')
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
-const { registerValidator,validationResult} = require('../../Helper/userValidator');
+const { registerValidator,registerValidationResult } = require('../../Helper/userValidator');
 
 
 
@@ -170,7 +170,7 @@ router.get('/register', async (req,res)=>{
 
 
 //Post method Register Page 
-router.post('/register', upload.single('avatar'), async (req,res,next)=>{
+router.post('/register',registerValidator,registerValidationResult , upload.single('avatar'), async (req,res,next)=>{
 
     const deleteUploadedFile = async()=>{
         if(req.file){
@@ -187,10 +187,10 @@ router.post('/register', upload.single('avatar'), async (req,res,next)=>{
 
     const {name,username,email,phone,password} = req.body;
        // await deleteUploadedFile()
-    if(!name || !username || !email || !phone || !password){
-        await deleteUploadedFile()
-        return res.status(400).send('All field required')
-    }
+    // if(!name || !username || !email || !phone || !password){
+    //     await deleteUploadedFile()
+    //     return res.status(400).send('All field required')
+    // }
 
     const existUsername = await User.findOne({$or:[{username: req.body.username},{email: req.body.email},{phone: req.body.phone}]})
     if(existUsername){

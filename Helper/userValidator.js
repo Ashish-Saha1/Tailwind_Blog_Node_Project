@@ -38,15 +38,23 @@ const registerValidator = [
 const registerValidationResult = (req,res,next)=>{
     const errors = validationResult(req);
     const mappedErrors = errors.mapped();
+console.log(mappedErrors);
 
-    if(Object.keys(validationResult).length === 0){
+    if(Object.keys(mappedErrors).length === 0){
         next()
     }else{
-        res.status(500).json(
+        let formatError = {};
+
+        for(let field in mappedErrors){
+            formatError[field] = mappedErrors[field].msg;
+        }
+
+         res.status(500).json(
             {
-                errors : mappedErrors
+                errors : formatError
             }
         )
+       
     }
 }
 
@@ -55,5 +63,5 @@ const registerValidationResult = (req,res,next)=>{
 
 module.exports = {
     registerValidator,
-    validationResult
+    registerValidationResult
 }
