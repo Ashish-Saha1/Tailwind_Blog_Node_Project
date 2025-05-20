@@ -5,53 +5,71 @@ const user = require('../Server/Model/user');
 
 
 const registerValidator = [
-    check('name')
-        .isAlpha().withMessage('Use later only')
-        .notEmpty().withMessage("Name is empty")
-        .isLength({min:5}).withMessage('Name must be at least 5 characters long')
-        .trim(),
+  check('name')
+    .trim()
+    .notEmpty().withMessage("Name is empty").bail()
+    .isAlpha().withMessage('Use letters only').bail()
+    .isLength({ min: 5 }).withMessage('Name must be at least 5 characters long'),
 
-    check('username')
-        .isAlpha().withMessage('Use later only')
-        .notEmpty().withMessage("Username is empty")
-        .isLength({min:5}).withMessage('Name must be at least 5 characters long')
-        .trim(),
+  check('username')
+    .trim()
+    .notEmpty().withMessage("Username is empty").bail()
+    .isAlpha().withMessage('Use letters only').bail()
+    .isLength({ min: 5 }).withMessage('Username must be at least 5 characters long'),
 
-    check('email')
-        .isEmail().withMessage('Must be a valid email')
-        .notEmpty().withMessage("Email is empty")
-        .trim(),
+  check('email')
+    .trim()
+    .notEmpty().withMessage("Email is empty").bail()
+    .isEmail().withMessage('Must be a valid email'),
 
-    check('phone')
-        .notEmpty().withMessage("Phone is empty")
-        .isMobilePhone('bn-BD').withMessage('Enter a valid Phone number')
-        .trim(),
+  check('phone')
+    .trim()
+    .notEmpty().withMessage("Phone is empty").bail()
+    .isMobilePhone('bn-BD').withMessage('Enter a valid Phone number'),
 
-    check('password')
-        .notEmpty().withMessage('Password is required')
-        .isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
-        .trim(),
-]
+  check('password')
+    .trim()
+    .notEmpty().withMessage('Password is required').bail()
+    .isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+];
 
 
+// const registerValidationResult = (req, res, next) => {
+//     const errors = validationResult(req);
+//     const mappedErrors = errors.mapped();
 
-const registerValidationResult = (req,res,next)=>{
+//     if (Object.keys(mappedErrors).length === 0) {
+//         next();
+//     } else {
+//         res.status(400).json({ errors: mappedErrors });
+//     }
+// };
+
+
+const registerValidationResult = (req, res, next) => {
     const errors = validationResult(req);
     const mappedErrors = errors.mapped();
 
+    if (Object.keys(mappedErrors).length === 0) {
+        next();
+    } else {
+        // Extract only field: msg
+        const simplifiedErrors = {};
+        for (let field in mappedErrors) {
+            simplifiedErrors[field] = mappedErrors[field].msg;
+        }
 
-    if(Object.keys(mappedErrors).length === 0){
-        next()
-    }else{
-        
-        res.status(500).json(
-            {
-                errors : mappedErrors
-            }
-        )
-    
+        res.status(400).json({ errors: simplifiedErrors });
     }
-}
+};
+
+module.exports = {
+    registerValidator,
+    registerValidationResult
+};
+
+
+
 
 
 
@@ -60,3 +78,8 @@ module.exports = {
     registerValidator,
     registerValidationResult
 }
+
+
+
+
+

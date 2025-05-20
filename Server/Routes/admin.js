@@ -204,7 +204,7 @@ router.post('/register',registerValidator,registerValidationResult , upload.sing
             const userCreate = await user.save()
             res.redirect('login')
         
-               
+        
     } catch (error) {
         console.log(`Error Catched register: ${error}`);
         next("Error in Register: Error Is", error)
