@@ -10,6 +10,7 @@ const bcrypt = require('bcrypt')
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const { registerValidator,registerValidationResult } = require('../../Helper/userValidator');
+const deleteUploadedFile = require('../../Helper/deleteUploadedFile');
 
 
 
@@ -172,31 +173,19 @@ router.get('/register', async (req,res)=>{
 //Post method Register Page 
 router.post('/register',registerValidator,registerValidationResult , upload.single('avatar'), async (req,res,next)=>{
 
-    const deleteUploadedFile = async()=>{
-        if(req.file){
-            const filePath = path.join(__dirname, "../../Public/uploads", req.file.filename)
-            try {
-                await fs.promises.unlink(filePath)
-                console.log('deleted')
-            } catch (error) {
-                console.log(`Failed to delete Uploaded file, ${error}`);
-                                
-            }
-        }
-    }
 
-    const {name,username,email,phone,password} = req.body;
+    //const {name,username,email,phone,password} = req.body;
        // await deleteUploadedFile()
     // if(!name || !username || !email || !phone || !password){
     //     await deleteUploadedFile()
     //     return res.status(400).send('All field required')
     // }
 
-    const existUsername = await User.findOne({$or:[{username: req.body.username},{email: req.body.email},{phone: req.body.phone}]})
-    if(existUsername){
-        await deleteUploadedFile()
-        return res.status(400).send("Username or email or phone is already exist")
-    }
+    // const existUsername = await User.findOne({$or:[{username: req.body.username},{email: req.body.email},{phone: req.body.phone}]})
+    // if(existUsername){
+    //     await deleteUploadedFile()
+    //     return res.status(400).send("Username or email or phone is already exist")
+    // }
 
 
     const hashed = await bcrypt.hash(req.body.password, 10)
