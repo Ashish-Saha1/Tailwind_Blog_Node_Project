@@ -22,7 +22,7 @@
 
                                                 <!-- Header statrs -->
 
-    <header class="w-screen bg-amber-50">
+    <!-- <header class="w-screen bg-amber-50">
         <nav class="w-[98%] mx-auto flex items-center justify-between">
 
             <div class="flex items-center gap-4">
@@ -68,14 +68,14 @@
 
                                                 <!-- Body Section Starts Here -->
 
-    <div class="author text-center my-20">
+    <!-- <div class="author text-center my-20">
         <h1 class="text-6xl font-bold mb-8">Hi, I am Reddy.</h1>
         <h3 class="text-3xl font-semiboldbold">Web developer & Content creator</h3>
     </div>
 
     <div class="">
         <img class="w-[60rem] mx-auto object-fill h-auto rounded-lg shadow-2xl" src="./hero-image.webp" alt="">
-    </div>
+    </div> -->
 
 
                                                 <!-- Body Section Ends Here -->
@@ -83,7 +83,7 @@
 
                                                 <!-- Posts Section Starts Here --> 
 
-    <div class="posts max-w-[64rem]  mx-auto my-10 group">
+    <!-- <div class="posts max-w-[64rem]  mx-auto my-10 group">
         <h1 class="text-3xl font-bold mb-10">Latest Posts</h1>
 
         <div class="post md:flex justify-between items-center cursor-pointer py-5 border-b border-sky-200 hover:blur-none group-hover:blur-sm hover:!blur-none transition-all">
@@ -100,7 +100,7 @@
             <p class="text-[1.5rem] font-semibold mb-3">Learn JS</p>
             <span class="text-[1rem] ">Sun Jan 26 2025</span>
         </div>
-    </div>
+    </div> --> 
 
                                                 <!-- Posts Section Ends Here -->
 
@@ -117,22 +117,34 @@
 
 
 <script>
-    const navUl = document.querySelector('.nav-ul')
+    // const navUl = document.querySelector('.nav-ul')
 
-    const hideMenu = function(event){
-        event.name = event.name === "menu" ? "close" : "menu";
-        navUl.classList.toggle('top-[64px]')
+    // const hideMenu = function(event){
+    //     event.name = event.name === "menu" ? "close" : "menu";
+    //     navUl.classList.toggle('top-[64px]')
         
 
-        window.addEventListener('resize',(e)=>{           
-            if(innerWidth >= 768){
-                event.name = "menu"
-                navUl.classList.remove('top-[64px]');
+    //     window.addEventListener('resize',(e)=>{           
+    //         if(innerWidth >= 768){
+    //             event.name = "menu"
+    //             navUl.classList.remove('top-[64px]');
                 
-            }
+    //         }
          
-    })
-    }
+    // })
+    // }
+
+
+
+    let text = "%AVisit$123#fdjk#$%^&*(()) ";
+    let pattern = /[^a-z]/ig;
+    let result = text.replace(pattern, "");
+
+    console.log(result);
+    
+
+
+
 
 
 

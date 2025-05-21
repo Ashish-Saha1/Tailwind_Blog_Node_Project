@@ -5,12 +5,10 @@ const User = require('../Model/user');
 const authGurd = require('../../Helper/authGurd');
 
 const multer = require('multer');
-const path = require('path');
 const bcrypt = require('bcrypt')
-const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const { registerValidator,registerValidationResult } = require('../../Helper/userValidator');
-const deleteUploadedFile = require('../../Helper/deleteUploadedFile');
+const deleteUploadedFile = require('../../Helper/deleteUploadedFile')
 
 
 
@@ -171,21 +169,21 @@ router.get('/register', async (req,res)=>{
 
 
 //Post method Register Page 
-router.post('/register',registerValidator,registerValidationResult , upload.single('avatar'), async (req,res,next)=>{
+router.post('/register', upload.single('avatar'), async (req,res,next)=>{
 
 
-    //const {name,username,email,phone,password} = req.body;
-       // await deleteUploadedFile()
-    // if(!name || !username || !email || !phone || !password){
-    //     await deleteUploadedFile()
-    //     return res.status(400).send('All field required')
-    // }
+    const {name,username,email,phone,password} = req.body;
+    
+    if(!name || !username || !email || !phone || !password){
+        await deleteUploadedFile(req,res,next)
+        return res.status(400).send('All field required')
+    }
 
-    // const existUsername = await User.findOne({$or:[{username: req.body.username},{email: req.body.email},{phone: req.body.phone}]})
-    // if(existUsername){
-    //     await deleteUploadedFile()
-    //     return res.status(400).send("Username or email or phone is already exist")
-    // }
+    const existUsername = await User.findOne({$or:[{username: req.body.username},{email: req.body.email},{phone: req.body.phone}]})
+    if(existUsername){
+        await deleteUploadedFile(req,res,next)
+        return res.status(400).send("Username or email or phone is already exist")
+    }
 
 
     const hashed = await bcrypt.hash(req.body.password, 10)
@@ -330,7 +328,19 @@ router.delete('/delete-post/:id', authGurd, async (req,res,next)=>{
 })
 
 
+//Search Route Get method
 
+router.get('/search', async (req,res,next)=>{
+    
+    try {
+        
+        res.redirect('/search')
+        
+    } catch (error) {
+        next(error)
+    }
+
+})
 
 
 

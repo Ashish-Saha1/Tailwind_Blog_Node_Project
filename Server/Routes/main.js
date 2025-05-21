@@ -91,13 +91,24 @@ router.get('/post/:id', async (req,res,next)=>{
 })
 
 
-router.get('/check', async(req,res)=>{
-    const posts = await Post.findOne({'title': "Express JS"})
+//Post method Search Page 
+router.post('/search', async (req,res)=>{
+    const locals = {
+        title: "Search Page",
+        description : "This is a blog site using tailwind"
+    }
 
-    res.render('post', {posts})
+    try {
+        const searchResult = await Post.find()
+    } catch (error) {
+        
+    }
+
+   
+    
+    res.render('search.ejs',{locals})
+    
 })
-
-
 
 
 
