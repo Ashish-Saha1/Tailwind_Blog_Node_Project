@@ -331,7 +331,7 @@ router.delete('/delete-post/:id', authGurd, async (req,res,next)=>{
 //Search Route Get method
 
 router.get('/search', async (req,res,next)=>{
-    
+   
     try {
         
         res.redirect('/search')

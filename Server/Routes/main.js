@@ -97,17 +97,14 @@ router.post('/search', async (req,res)=>{
         title: "Search Page",
         description : "This is a blog site using tailwind"
     }
-
+ let pattern = new RegExp("[^a-z]", "ig")
     try {
-        const searchResult = await Post.find()
+        const searchData = await Post.find({title: 'Hellow'})
+        console.log(searchData)
+         res.render('search.ejs',{locals})
     } catch (error) {
-        
-    }
-
-   
-    
-    res.render('search.ejs',{locals})
-    
+        next(error)
+    } 
 })
 
 

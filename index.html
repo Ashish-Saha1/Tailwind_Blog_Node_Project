@@ -136,8 +136,9 @@
 
 
 
-    let text = "%AVisit$123#fdjk#$%^&*(()) ";
-    let pattern = /[^a-z]/ig;
+    let text = "%Ashish$123# sa#$%^&*((h11a))*&@# ";
+    //let pattern = /[^a-z]/ig; 
+    let pattern = new RegExp("[^a-z]", "ig")
     let result = text.replace(pattern, "");
 
     console.log(result);
