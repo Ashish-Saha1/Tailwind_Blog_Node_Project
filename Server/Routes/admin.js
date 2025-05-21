@@ -328,19 +328,27 @@ router.delete('/delete-post/:id', authGurd, async (req,res,next)=>{
 })
 
 
-//Search Route Get method
-
-router.get('/search', async (req,res,next)=>{
-   
-    try {
-        
-        res.redirect('/search')
-        
-    } catch (error) {
-        next(error)
+//Post method Search Page 
+router.post('/search', async (req,res,next)=>{
+    const locals = {
+        title: "Admin Search Page",
+        description : "This is a blog site using tailwind"
     }
 
+    let searchTerm = req.body.search;
+    //let pattern = new RegExp("[^a-z]", "ig")
+    //This pattern keeps space word _ numeric
+    let pattern = searchTerm.replace(/[^\w\s]g/, "")
+    
+    try {
+        const searchDataAdmin = await Post.find({title: new RegExp(pattern, "i")})
+        res.render('Admin/adminSearch',{locals,searchDataAdmin})
+
+    } catch (error) {
+        next(error)
+    } 
 })
+
 
 
 

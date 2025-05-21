@@ -48,7 +48,7 @@ router.get('/', async (req,res)=>{
 
 
 //Get method About Page 
-router.get('/about',authGurd, async (req,res)=>{
+router.get('/about', async (req,res)=>{
     const locals = {
         title: "About Page",
         description : "This is a blog site using tailwind"
@@ -56,6 +56,32 @@ router.get('/about',authGurd, async (req,res)=>{
    
     
     res.render('about.ejs',{locals})
+    
+})
+
+
+//Get method Project Page 
+router.get('/project', async (req,res)=>{
+    const locals = {
+        title: "Project Page",
+        description : "This is a blog site using tailwind"
+    }
+   
+    
+    res.render('project.ejs',{locals})
+    
+})
+
+
+//Get method Contact Page 
+router.get('/contact', async (req,res)=>{
+    const locals = {
+        title: "Contact Page",
+        description : "This is a blog site using tailwind"
+    }
+   
+    
+    res.render('contact.ejs',{locals})
     
 })
 
@@ -97,11 +123,16 @@ router.post('/search', async (req,res)=>{
         title: "Search Page",
         description : "This is a blog site using tailwind"
     }
- let pattern = new RegExp("[^a-z]", "ig")
+
+    let searchTerm = req.body.search;
+    //let pattern = new RegExp("[^a-z]", "ig")
+    //This pattern keeps space word _ numeric
+    let pattern = searchTerm.replace(/[^\w\s]g/, "")
+    
     try {
-        const searchData = await Post.find({title: 'Hellow'})
-        console.log(searchData)
-         res.render('search.ejs',{locals})
+        const searchData = await Post.find({title: new RegExp(pattern, "i")})
+        res.render('search.ejs',{locals,searchData})
+
     } catch (error) {
         next(error)
     } 

@@ -1,0 +1,25 @@
+
+<h1 class="text-3xl font-bold mb-10 text-center" >Admin Search page is loaded successfully</h1>
+
+<!-- Search Posts Starts Here --> 
+
+<div class="posts max-w-[64rem]  mx-auto my-10 group px-6">
+    <h1 class="text-3xl font-bold mb-10">Search Result</h1>
+
+    <% searchDataAdmin.forEach(element => { %>
+        <div class="post md:flex justify-between items-center cursor-pointer py-5 border-b border-sky-200 hover:blur-none group-hover:blur-[2px] hover:!blur-none transition-all">
+            <a href="/admin/post/<%= element._id %>"><p class="text-[1.5rem] font-semibold mb-3"><%=  element.title %> </p> </a>
+            
+            <div class="flex gap-3">
+                <span class="bg-black text-amber-50 px-3 py-0.5 rounded"><a href="/admin/edit-post/<%= element._id %>">Edit</a></span>
+                <form action="/admin/delete-post/<%= element._id %>?_method=DELETE" method="POST">
+                    <input type="submit" value="Delete" class="bg-black text-amber-50 px-3 py-0.5 rounded">
+                </form>
+                
+            </div>
+
+        </div>
+    <% }) %>
+
+
+</div>
