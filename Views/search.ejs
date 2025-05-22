@@ -6,7 +6,8 @@
 <div class="posts max-w-[64rem]  mx-auto my-10 group px-6">
     <h1 class="text-3xl font-bold mb-10">Search Result</h1>
 
-    <% searchData.forEach(post => { %>
+   <% if (searchData) { %>
+     <% searchData.forEach(post => { %>
         <div class="post md:flex justify-between items-center cursor-pointer py-5 border-b border-sky-200 hover:blur-none group-hover:blur-[2px] hover:!blur-none transition-all">
         <a href="/post/<%=post._id%>"> <p class="text-[1.5rem] font-semibold mb-3"><%=  post.title %> </p> </a> 
             
@@ -14,6 +15,8 @@
     
         </div>
     <% }) %>
+   <% } %>
 
+   <h1>No Search Result Found</h1>
    
 </div>
