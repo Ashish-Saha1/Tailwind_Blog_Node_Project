@@ -329,12 +329,12 @@ router.delete('/delete-post/:id', authGurd, async (req,res,next)=>{
 
 
 //Post method Search Page 
-router.post('/admin-search', async (req,res,next)=>{
+router.post('/admin-search', authGurd, async (req,res,next)=>{
     const locals = {
         title: "Admin Search Page",
         description : "This is a blog site using tailwind"
     }
-
+  
     let searchTerm = req.body.search;
     //let pattern = new RegExp("[^a-z]", "ig")
     //This pattern keeps space word _ numeric

@@ -118,12 +118,14 @@ router.get('/post/:id', async (req,res,next)=>{
 
 
 //Post method Search Page 
-router.post('/search', async (req,res)=>{
+router.post('/search/:user', async (req,res)=>{
     const locals = {
         title: "Search Page",
         description : "This is a blog site using tailwind"
     }
-
+        const loggedInUser = req.user.name || null 
+        const paramsValue = req.params.user ? loggedInUser : null
+        
     let searchTerm = req.body.search;
     //let pattern = new RegExp("[^a-z]", "ig")
     //This pattern keeps space word _ numeric
@@ -131,7 +133,7 @@ router.post('/search', async (req,res)=>{
     
     try {
         const searchData = await Post.find({title: new RegExp(pattern, "i")})
-        res.render('search.ejs',{locals,searchData})
+        res.render('search.ejs',{locals,searchData, loggedInUser})
 
     } catch (error) {
         next(error)
