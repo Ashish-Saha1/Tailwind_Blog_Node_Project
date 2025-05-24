@@ -341,8 +341,8 @@ router.post('/admin-search', authGurd, async (req,res,next)=>{
     let pattern = searchTerm.replace(/[^\w\s]g/, "")
     
     try {
-        const searchDataAdmin = await Post.find({title: new RegExp(pattern, "i")})
-        res.render('Admin/adminSearch',{locals,searchDataAdmin})
+        const searchData = await Post.find({title: new RegExp(pattern, "i")})
+        res.render('search',{locals,searchData})
 
     } catch (error) {
         next(error)

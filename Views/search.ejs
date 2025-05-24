@@ -7,17 +7,43 @@
     <h1 class="text-3xl font-bold mb-10">Search Result</h1>
 
   <% if (searchData) { %>
-    <% searchData.forEach(post => { %>
-        <div class="post md:flex justify-between items-center cursor-pointer py-5 border-b border-sky-200 hover:blur-none group-hover:blur-[2px] hover:!blur-none transition-all">
-        <a href="/post/<%=post._id%>"> <p class="text-[1.5rem] font-semibold mb-3"><%=  post.title %> </p> </a> 
-            
-            
     
-        </div>
-    <% }) %>
-  <% } %>
+    <% if (cookieToken) { %>
+      
+      <% searchData.forEach(post => { %>
+           <div class="post md:flex justify-between items-center cursor-pointer py-5 border-b border-sky-200 hover:blur-none group-hover:blur-[2px] hover:!blur-none transition-all">
+            <a href="/admin/post/<%= post._id %>"><p class="text-[1.5rem] font-semibold mb-3"><%=  post.title %> </p> </a>
+            
+            <div class="flex gap-3">
+                <span class="bg-black text-amber-50 px-3 py-0.5 rounded"><a href="/admin/edit-post/<%= post._id %>">Edit</a></span>
+                <form action="/admin/delete-post/<%= post._id %>?_method=DELETE" method="POST">
+                    <input type="submit" value="Delete" class="bg-black text-amber-50 px-3 py-0.5 rounded">
+                </form>
+                
+            </div>
 
-  <h1>No Search Result Found</h1>
+        </div>
+      <% }) %>
+
+    <% }else { %>
+           <% searchData.forEach(post => { %>
+          <div class="post md:flex justify-between items-center cursor-pointer py-5 border-b border-sky-200 hover:blur-none group-hover:blur-[2px] hover:!blur-none transition-all">
+          <a href="/post/<%=post._id%>"> <p class="text-[1.5rem] font-semibold mb-3"><%=  post.title %> </p> </a> 
+          </div>
+      <% }) %>
+
+         
+
+    <% }  %>
+     
+
+
+  <% } else { %>
+<h1>No Search Result Found</h1>
+  <% } %>
+   
+
+  
   
   
 </div>
