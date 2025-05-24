@@ -123,8 +123,10 @@ router.post('/search/:user', async (req,res)=>{
         title: "Search Page",
         description : "This is a blog site using tailwind"
     }
-        const loggedInUser = req.user.name || null 
+        const loggedInUser = req.user.username || null 
         const paramsValue = req.params.user ? loggedInUser : null
+        console.log("params",paramsValue);
+        console.log("loggedInUser",loggedInUser);
         
     let searchTerm = req.body.search;
     //let pattern = new RegExp("[^a-z]", "ig")
@@ -133,7 +135,7 @@ router.post('/search/:user', async (req,res)=>{
     
     try {
         const searchData = await Post.find({title: new RegExp(pattern, "i")})
-        res.render('search.ejs',{locals,searchData, loggedInUser})
+        res.render('search.ejs',{locals,searchData, paramsValue})
 
     } catch (error) {
         next(error)

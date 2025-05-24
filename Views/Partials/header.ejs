@@ -47,21 +47,14 @@
 
         <div class="font-semibold flex items-center justify-between gap-2">
 
-            <!-- <form action="/search" method="post">
-                <!-- <label for="search">Search</label> -->
-                <input class="border-black outline-none border-2 rounded-sm px-2 md:w-40 w-28 " type="search" name="search" placeholder="Search"
-                    id="">
-            </form> -->
-
-            <% if (loggedInUser) { %>
-                <form action="/search/<%= loggedInUser  %>" method="post">
+        
+            <form action="/search" method="post">
                 <!-- <label for="search">Search</label> -->
                 <input class="border-black outline-none border-2 rounded-sm px-2 md:w-40 w-28 " type="search" name="search" placeholder="Search"
                     id="">
             </form>
-            <% } %>
 
-            
+
 
         
             
