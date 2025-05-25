@@ -15,7 +15,7 @@ const methodOverride = require('method-override');
 const mainRoutes = require('./Server/Routes/main');
 const adminRoutes = require('./Server/Routes/admin');
 const dbConnect = require('./Server/Config/db');
-
+const activeRoute = require('./Helper/activeRoute')
 
 
 
@@ -56,10 +56,12 @@ app.use((req, res, next) => {
     next();
   });
 
-app.use((req, res, next) => {
-    res.locals.currentRoute = req.path;   
-    next();
-  });
+  app.locals.activeRoute = activeRoute;
+
+// app.use((req, res, next) => {
+//     res.locals.currentRoute = req.path;   
+//     next();
+//   });
 
 //Routes
 app.use("/",mainRoutes)
