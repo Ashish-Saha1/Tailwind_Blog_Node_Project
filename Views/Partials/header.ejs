@@ -8,16 +8,16 @@
         </div>
 
         <div class="nav-ul transition-[top] duration-500  md:static absolute bg-white md:bg-transparent md:min-h-fit min-h-[60vh] left-0 top-[-100%] w-full md:w-auto px-4 md:px-0 ">
-            <ul class="flex md:flex-row flex-col md:gap-[2.5vw] [&>li]:my-4 md:[&>li]:my-0 font-semibol ">
+            <ul class=" flex md:flex-row flex-col md:gap-[2.5vw] [&>li]:my-4 md:[&>li]:my-0 font-semibol ">
                 <li>
-                    <a class="hover:text-gray-400 duration-300" href="/">Home</a>
+                    <a class="hover:text-gray-400 duration-300" data-home="<%= currentRoute %>" href="/">Home</a>
                 </li>
                 <li>
-                    <a class="hover:text-gray-400 duration-300" href="/project">Project</a>
+                    <a class="hover:text-gray-400 duration-300" data-home="<%= currentRoute %>" href="/project">Project</a>
                 </li>
                 
                 <li>
-                    <a class="hover:text-gray-400 duration-300" 
+                    <a class="hover:text-gray-400 duration-300"  
                     href=" 
                     <% if (cookieToken) { %>
                     /admin/dashboard
@@ -30,14 +30,14 @@
                 </li>
 
                 <li>
-                    <a class="hover:text-gray-400 duration-300" href="/about">About</a>
+                    <a class="hover:text-gray-400 duration-300" data-home="<%= currentRoute %>" href="/about">About</a>
                 </li>
 
                 <% if (cookieToken) { %>
                     <%# Blank no item show %>
                     <% }else{ %>
                     <li>
-                        <a class="hover:text-gray-400 duration-300" href="/contact">Contact A</a>
+                        <a class="hover:text-gray-400 duration-300" data-home="<%= currentRoute %>" href="/contact">Contact A</a>
                     </li>
                     <% }  %>
 
@@ -47,6 +47,7 @@
 
         <div class="font-semibold flex items-center justify-between gap-2">
 
+           
         
             <form action="/search" method="post">
                 <!-- <label for="search">Search</label> -->
@@ -76,3 +77,32 @@
 
     </nav>
 </header>
+
+
+
+
+
+<script>
+
+    const homeDataRoutes = document.querySelectorAll('.nav-ul ul a')
+    
+
+    for(let i of homeDataRoutes){
+         //console.log(i.dataset.home);
+        console.log(i.href(''));
+        // i.addEventListener('click', ()=>{
+        //     if(i.dataset.home === i.href){
+        //         console.log('Mathc fond');
+                
+        //     }else{
+        //         console.log('Not match');
+                
+        //     }
+        // })
+        
+    }
+
+    
+
+
+</script>

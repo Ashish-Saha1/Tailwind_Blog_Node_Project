@@ -56,8 +56,10 @@ app.use((req, res, next) => {
     next();
   });
 
-
-
+app.use((req, res, next) => {
+    res.locals.currentRoute = req.path;   
+    next();
+  });
 
 //Routes
 app.use("/",mainRoutes)

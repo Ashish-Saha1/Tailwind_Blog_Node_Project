@@ -39,7 +39,8 @@ router.get('/', async (req,res)=>{
     res.render('indexBody', 
         {   locals, 
             posts,
-            nextPage : hasNextPage? nextPage : null
+            nextPage : hasNextPage? nextPage : null,
+            currentRoute : '/'
         }
 
     )
@@ -55,7 +56,7 @@ router.get('/about', async (req,res)=>{
     }
    
     
-    res.render('about.ejs',{locals})
+    res.render('about.ejs',{locals, currentRoute: "/about"})
     
 })
 
@@ -68,7 +69,7 @@ router.get('/project', async (req,res)=>{
     }
    
     
-    res.render('project.ejs',{locals})
+    res.render('project.ejs',{locals, currentRoute: "/project"})
     
 })
 
@@ -81,7 +82,7 @@ router.get('/contact', async (req,res)=>{
     }
    
     
-    res.render('contact.ejs',{locals})
+    res.render('contact.ejs',{locals,currentRoute: "/contact"})
     
 })
 
