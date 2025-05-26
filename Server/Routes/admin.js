@@ -68,7 +68,7 @@ router.get('/login', async (req,res)=>{
     //Now problem is solved by passed cookieToken another passed in dashboard route to loggled sign in-out
     // const cookieToken = req.cookies.token
     
-    res.render('Admin/login',{locals, layout: adminLayout, currentRoute: "/admin/login"})
+    res.render('Admin/login',{locals, layout: adminLayout, })
     
 })
 
@@ -260,6 +260,7 @@ router.post('/add-post',authGurd, async(req,res,next)=>{
         }
         
     }   catch (error) {
+        console.log("/add-post route", error)
         next(error)
     }
 

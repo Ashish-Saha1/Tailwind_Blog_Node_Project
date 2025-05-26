@@ -40,7 +40,7 @@ router.get('/', async (req,res)=>{
         {   locals, 
             posts,
             nextPage : hasNextPage? nextPage : null,
-            currentRoute : '/'
+            // currentRoute : '/'
         }
 
     )
@@ -69,7 +69,10 @@ router.get('/project', async (req,res)=>{
     }
    
     
-    res.render('project.ejs',{locals, currentRoute: "/project"})
+    res.render('project.ejs',{
+        locals, 
+        // currentRoute: "/project"
+    })
     
 })
 
@@ -82,7 +85,9 @@ router.get('/contact', async (req,res)=>{
     }
    
     
-    res.render('contact.ejs',{locals,currentRoute: "/contact"})
+    res.render('contact.ejs',{locals,
+        // currentRoute: "/contact"
+    })
     
 })
 
@@ -109,7 +114,7 @@ router.get('/post/:id', async (req,res,next)=>{
     res.render('post', {
         postData: postData,
         locals: locals,
-        currentRoute : "/post/:id",
+        
     })
     
     } catch (error) {
