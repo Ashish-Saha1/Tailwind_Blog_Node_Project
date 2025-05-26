@@ -4,6 +4,8 @@ const Post = require('../Model/post');
 const User = require('../Model/user');
 const authGurd = require('../../Helper/authGurd');
 
+const excelJS = require('exceljs');
+
 const multer = require('multer');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
@@ -351,6 +353,59 @@ router.post('/admin-search', authGurd, async (req,res,next)=>{
 
 
 
+
+//Download file to excel
+
+router.get('/exprot-posts', authGurd, async(req,res,next)=>{
+    
+    try {
+        const Posts = await Post.find().lean();
+        const workbook = new excelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Posts');
+
+    //Add Header
+    worksheet.columns = [
+        {header : "Id", key: 'id', width: 30},
+        {header : "Title", key: 'title', width: 30},
+        {header : "Description", key: 'description', width: 60},
+        { header: 'Created At', key: 'createdAt', width: 25 },
+        { header: 'Updated At', key: 'updatedAt', width: 25 }
+    ]
+
+    //Add Rows
+    Posts.forEach(item=>{
+        worksheet.addRow({
+            id : item._id,
+            title : item.title,
+            description: item.description,
+            createdAt : item.createdAt,
+            updatedAt : item.updatedAt
+        })
+    })
+
+    //Response set
+
+    res.setHeader(
+        'Content-Type',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+
+    res.setHeader(
+            'Content-Disposition',
+            'attachment; filename=posts.xlsx'
+        );
+
+        await workbook.xlsx.write(res);
+        res.end()
+
+    } catch (error) {
+        console.error('Excel Export Error:', error);
+        res.status(500).send('Something went wrong');
+    }
+
+
+
+})
 
 
 
